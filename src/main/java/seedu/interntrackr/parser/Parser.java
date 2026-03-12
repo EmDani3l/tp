@@ -30,8 +30,9 @@ public class Parser {
         case "list":
             return new ListCommand();
         case "status":
-            if (arguments.isEmpty() || !arguments.contains(" s/")) {
-                throw new InternTrackrException("Invalid format. Usage: status INDEX s/STATUS (e.g., status 1 s/\"Interview\")");
+            if (!arguments.contains(" s/")) {
+                throw new InternTrackrException("Invalid format. Usage: status INDEX s/STATUS "
+                        + "(e.g., status 1 s/\"Interview\")");
             }
 
             String[] statusArgs = arguments.split(" s/", 2);

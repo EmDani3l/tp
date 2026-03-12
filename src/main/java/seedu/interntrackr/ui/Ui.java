@@ -6,8 +6,8 @@ import java.util.Scanner;
  * Handles terminal reading and writing formatting.
  */
 public class Ui {
-    private Scanner in;
     private static final String LINE = "____________________________________________________________";
+    private Scanner in;
 
     public Ui() {
         this.in = new Scanner(System.in);
