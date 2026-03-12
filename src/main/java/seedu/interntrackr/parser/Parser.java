@@ -62,13 +62,16 @@ public class Parser {
                         "Invalid format. Usage: deadline INDEX t/TYPE d/YYYY-MM-DD");
             }
             int index = Integer.parseInt(arguments.substring(0, typeIndex).trim());
-            String deadlineType = arguments.substring(typeIndex + 3, dateIndex).trim().replace("\"", "");
-            String dueDate = arguments.substring(dateIndex + 3).trim().replace("\"", "");
+            String deadlineType = arguments.substring(typeIndex + 3, dateIndex)
+                    .trim().replace("\"", "");
+            String dueDate = arguments.substring(dateIndex + 3)
+                    .trim().replace("\"", "");
+
             if (deadlineType.isEmpty() || dueDate.isEmpty()) {
                 throw new InternTrackrException("Deadline type and due date cannot be empty.");
             }
-            LocalDate.parse(dueDate);
-            return new DeadlineCommand(index, deadlineType, dueDate);
+            LocalDate parsedDueDate = LocalDate.parse(dueDate);
+            return new DeadlineCommand(index, deadlineType, parsedDueDate);
         } catch (NumberFormatException e) {
             throw new InternTrackrException("The application index must be a number.");
         } catch (DateTimeParseException e) {

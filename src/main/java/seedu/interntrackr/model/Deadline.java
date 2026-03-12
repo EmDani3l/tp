@@ -6,31 +6,31 @@ import java.time.LocalDate;
  * Represents a single deadline.
  */
 public class Deadline {
-    private String category;
+    private String deadlineType;
     private LocalDate dueDate;
     private boolean isDone;
 
     /**
      * Constructs a Deadline with the given category, dueDate.
      *
-     * @param category The category of the deadline.
+     * @param deadlineType The category of the deadline.
      * @param dueDate  The due date of the deadline.
      */
-    public Deadline(String category, LocalDate dueDate) {
-        this.category = category;
+    public Deadline(String deadlineType, LocalDate dueDate) {
+        this.deadlineType = deadlineType;
         this.dueDate = dueDate;
         this.isDone = false;
     }
 
     /**
-     * Constructs a Deadline with the given category, dueDate, isDone.
+     * Constructs a Deadline with the given deadlineType, dueDate, isDone.
      *
-     * @param category The category of the deadline.
+     * @param deadlineType The deadlineType of the deadline.
      * @param dueDate  The due date of the deadline.
      * @param isDone   The completeness of the deadline.
      */
-    public Deadline(String category, LocalDate dueDate, boolean isDone) {
-        this.category = category;
+    public Deadline(String deadlineType, LocalDate dueDate, boolean isDone) {
+        this.deadlineType = deadlineType;
         this.dueDate = dueDate;
         this.isDone = isDone;
     }
@@ -78,7 +78,7 @@ public class Deadline {
      */
     @Override
     public String toString() {
-        return "Category: " + this.category + " | Due Date: " + this.dueDate + " | Done: " + markIsDone();
+        return "Deadline Type: " + this.deadlineType + " | Due Date: " + this.dueDate + " | Done: " + markIsDone();
     }
 
     /**
@@ -87,6 +87,6 @@ public class Deadline {
      * @return A storage-formatted string.
      */
     public String toStorageString() {
-        return this.category + " | " + this.dueDate + " | " + this.isDone;
+        return this.deadlineType + " | " + this.dueDate + " | " + this.isDone;
     }
 }
