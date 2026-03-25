@@ -55,19 +55,20 @@ public class FilterCommand extends Command {
                     + "Accepted");
         }
 
-        ui.showMessage("Here are the applications with status: " + this.status);
+        String searchStatus = Application.getNormalizedStatus(this.status);
+        ui.showMessage("Here are the applications with status: " + searchStatus);
         int matchCount = 0;
 
         for (int i = 1; i <= applications.getSize(); i++) {
             Application app = applications.getApplication(i);
-            if (app != null && app.getStatus().equals(this.status)) {
+            if (app != null && app.getStatus().equals(searchStatus)) {
                 ui.showMessage(i + ". " + app.toString());
                 matchCount++;
             }
         }
 
         if (matchCount == 0) {
-            ui.showMessage("No applications found with status: " + this.status);
+            ui.showMessage("No applications found with status: " + searchStatus);
         }
     }
 
