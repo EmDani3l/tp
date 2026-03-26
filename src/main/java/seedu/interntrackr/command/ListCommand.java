@@ -28,13 +28,13 @@ public class ListCommand extends Command {
         logger.info("Executing ListCommand. Total applications: " + applications.getSize());
 
         if (applications.getSize() == 0) {
-            System.out.println("No applications found. Start adding some!");
+            ui.showMessage("No applications found. Start adding some!");
             return;
         }
-        System.out.println("Here are your internship applications:");
+        ui.showMessage("Here are your internship applications:");
         for (int i = 1; i <= applications.getSize(); i++) {
             Application app = applications.getApplication(i);
-            System.out.println(i + ". " + app.toString());
+            ui.showMessage(i + ". " + app.toString());
         }
         logger.fine("Listed " + applications.getSize() + " applications successfully.");
     }
