@@ -13,20 +13,18 @@ import java.util.logging.Logger;
 public class OverviewCommand extends Command {
     private static final Logger logger = Logger.getLogger(OverviewCommand.class.getName());
 
+    /**
+     * Executes the overview command by printing the total number of tracked applications.
+     *
+     * @param applications The current list of applications; must not be null.
+     * @param ui           The UI used to display output; must not be null.
+     * @param storage      Not used by this command; may be null.
+     * @throws InternTrackrException Not thrown by this command, declared for interface compliance.
+     */
     @Override
     public void execute(ApplicationList applications, Ui ui, Storage storage) throws InternTrackrException {
         assert applications != null : "ApplicationList must not be null";
         assert ui != null : "Ui must not be null";
-
-        if (applications == null) {
-            logger.severe("execute() called with null ApplicationList.");
-            throw new InternTrackrException("ApplicationList is null. Cannot display overview.");
-        }
-
-        if (ui == null) {
-            logger.severe("execute() called with null Ui.");
-            throw new InternTrackrException("Ui is null. Cannot display overview.");
-        }
 
         int size = applications.getSize();
         assert size >= 0 : "Application count must be non-negative";
