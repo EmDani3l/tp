@@ -108,4 +108,10 @@ public class ApplicationList {
         return false;
     }
 
+    /**
+     * Removes all application entries from the tracker.
+     */
+    public void clear() {
+        applications.clear();
+    }
 }
