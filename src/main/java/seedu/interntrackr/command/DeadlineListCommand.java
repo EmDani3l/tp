@@ -42,7 +42,8 @@ public class DeadlineListCommand extends Command {
         DeadlineList deadlines = app.getDeadlines();
 
         assert deadlines != null : "DeadlineList cannot be null";
-        logger.info("Executing DeadlineListCommand. Total deadlines assigned to this application: " + deadlines.getSize());
+        logger.info("Executing DeadlineListCommand. Total deadlines assigned to this application: "
+                + deadlines.getSize());
 
         if (deadlines.getSize() == 0) {
             ui.showMessage("No deadlines found for this application.");
