@@ -3,24 +3,24 @@ Welcome to InternTrackr! Ready to hunt for some internships?
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this application:
-  Company: Google | Role: Software Engineer | Status: Applied | Deadline: null
+  Company: Google | Role: Software Engineer | Status: Applied | Deadlines: null
 Now you have 1 application(s) in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this application:
-  Company: Meta | Role: Data Scientist | Status: Applied | Deadline: null
+  Company: Meta | Role: Data Scientist | Status: Applied | Deadlines: null
 Now you have 2 application(s) in the list.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've added this application:
-  Company: Amazon | Role: Backend Engineer | Status: Applied | Deadline: null
+  Company: Amazon | Role: Backend Engineer | Status: Applied | Deadlines: null
 Now you have 3 application(s) in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are your internship applications:
-1. Company: Google | Role: Software Engineer | Status: Applied | Deadline: null
-2. Company: Meta | Role: Data Scientist | Status: Applied | Deadline: null
-3. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadline: null
+1. Company: Google | Role: Software Engineer | Status: Applied | Deadlines: null
+2. Company: Meta | Role: Data Scientist | Status: Applied | Deadlines: null
+3. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadlines: null
 ____________________________________________________________
 ____________________________________________________________
 Overview:
@@ -35,24 +35,24 @@ Status updated! Meta is now marked as [Interview]
 ____________________________________________________________
 ____________________________________________________________
 Here are the applications with status: Applied
-1. Company: Google | Role: Software Engineer | Status: Applied | Deadline: null
-3. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadline: null
+1. Company: Google | Role: Software Engineer | Status: Applied | Deadlines: null
+3. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadlines: null
 ____________________________________________________________
 ____________________________________________________________
 Filter cleared. Showing all applications:
-1. Company: Google | Role: Software Engineer | Status: Applied | Deadline: null
-2. Company: Meta | Role: Data Scientist | Status: Interview | Deadline: null
-3. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadline: null
+1. Company: Google | Role: Software Engineer | Status: Applied | Deadlines: null
+2. Company: Meta | Role: Data Scientist | Status: Interview | Deadlines: null
+3. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadlines: null
 ____________________________________________________________
 ____________________________________________________________
 Noted. I've removed this application:
-  Company: Meta | Role: Data Scientist | Status: Interview | Deadline: null
+  Company: Meta | Role: Data Scientist | Status: Interview | Deadlines: null
 Now you have 2 application(s) in the list.
 ____________________________________________________________
 ____________________________________________________________
 Here are your internship applications:
-1. Company: Google | Role: Software Engineer | Status: Applied | Deadline: null
-2. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadline: null
+1. Company: Google | Role: Software Engineer | Status: Applied | Deadlines: null
+2. Company: Amazon | Role: Backend Engineer | Status: Applied | Deadlines: null
 ____________________________________________________________
 ____________________________________________________________
 Bye! Good luck with your internship hunt.
