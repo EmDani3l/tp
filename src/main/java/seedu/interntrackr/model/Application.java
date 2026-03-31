@@ -266,8 +266,8 @@ public class Application {
         sb.append(company).append(" | ")
                 .append(role).append(" | ")
                 .append(status).append(" | ")
-                .append(contactName == null ? "" : contactName).append(" | ")
-                .append(contactEmail == null ? "" : contactEmail);
+                .append(contactName == null ? "-" : contactName).append(" | ")
+                .append(contactEmail == null ? "-" : contactEmail);
 
         if (deadlines != null && deadlines.getSize() > 0) {
             for (Deadline deadline : deadlines.getDeadlines()) {

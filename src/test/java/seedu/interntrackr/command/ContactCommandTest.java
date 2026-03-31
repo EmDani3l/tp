@@ -96,8 +96,8 @@ class ContactCommandTest {
         assertEquals("alex@example.com", applications.getApplication(2).getContactEmail());
 
         ArrayList<Application> loaded = storage.load();
-        assertNull(loaded.get(0).getContactName());
-        assertNull(loaded.get(0).getContactEmail());
+        assertEquals("-", loaded.get(0).getContactName());
+        assertEquals("-", loaded.get(0).getContactEmail());
         assertEquals("Alex Lim", loaded.get(1).getContactName());
         assertEquals("alex@example.com", loaded.get(1).getContactEmail());
     }
