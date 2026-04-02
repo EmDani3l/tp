@@ -236,7 +236,7 @@ The sequence diagram below shows the full flow of the `list` command:
 <!-- @@author Emry -->
 
 ---
-### Filter and Status Feature Implementation
+### Filter, Status, Find and Clear Feature Implementation
 
 **Author:** Emry
 
@@ -330,7 +330,79 @@ The diagram below illustrates how the command interacts with the Model and Stora
 * **Choice**: Triggering `Storage#save()` automatically.
   * *Reasoning*: In a CLI environment, users often exit abruptly. Since status changes represent significant time investments (like receiving an offer), losing that update due to a crash or sudden exit is unacceptable. Auto-saving after every update prioritizes data safety.
 
+### 3. Find Feature Implementation
+
+The `find` feature allows users to search for specific internship applications by matching a keyword against company names and roles. This is essential for navigating large lists efficiently.
+
+#### 3.1 Implementation Details
+
+The feature is implemented through the `FindCommand` and `FindCommandParser` classes.
+
+**3.1.1 Parsing Logic**
+The `FindCommandParser#parse()` method processes the user input:
+1.  **Trimming**: It removes leading and trailing whitespace from the argument string.
+2.  **Validation**: It verifies that the resulting keyword is not empty. If it is, an `InternTrackrException` is thrown with usage instructions.
+3.  **Instantiation**: It returns a new `FindCommand` object initialized with the keyword.
+
+**3.1.2 Execution Logic**
+When `FindCommand#execute()` is called:
+1.  **Normalization**: The search keyword is converted to lowercase to facilitate case-insensitive matching.
+2.  **Iteration and Matching**: It loops through the `ApplicationList`. For each application, it checks if the lowercase company name or lowercase role contains the keyword.
+3.  **Result Aggregation**: Matching applications and their original 1-based indices are stored in temporary lists.
+4.  **Display**:
+  * If no matches are found, a "No matching applications found" message is displayed via the `Ui`.
+  * If matches exist, the `Ui` displays each matching application preceded by its original index number from the full list.
+
+#### 3.2 Sequence Diagrams
+
+The diagram below shows the interaction between the Parser, Command, and Model during a find operation:
+
+![Find Command Sequence Diagram](images/EmryFindCommandSequence.png)
+
+#### 3.3 Design Considerations
+
+**Aspect: Search Scope**
+* **Alternative 1**: Search only company names.
+  * *Pros*: Faster matching and less visual clutter.
+  * *Cons*: Users often want to group applications by role type (e.g., searching "Backend") across different firms.
+* **Alternative 2 (Current Choice)**: Search both company and role fields.
+  * *Reasoning*: Maximizes utility for the user by allowing them to find applications regardless of which detail they remember.
+
 ---
+
+### 4. Clear Feature Implementation
+
+The `clear` command allows users to wipe all stored internship applications to reset the tracker for a new cycle.
+
+#### 4.1 Implementation Details
+
+The feature is handled by the `ClearCommand` class and includes a safety confirmation step.
+
+**4.1.1 Execution Logic**
+The `ClearCommand#execute()` method follows a strict confirmation-before-deletion workflow:
+1.  **Confirmation Prompt**: It displays a warning asking the user to type "yes" to confirm the action.
+2.  **Blocking Input**: It calls `Ui#readCommand()` to wait for the user's specific response.
+3.  **Response Validation**: It checks if the response is exactly "yes" (case-insensitive and trimmed).
+4.  **Data Wiping**:
+  * If confirmed, it calls `applications.clear()` to empty the in-memory list.
+  * It immediately invokes `storage.save()` to overwrite the data file on disk with the now-empty list.
+  * A success message is displayed.
+5.  **Cancellation**: If the input is not "yes", the operation is aborted, and a cancellation message is shown.
+
+#### 4.2 Sequence Diagrams
+
+The diagram below illustrates the confirmation loop and subsequent data clearing process:
+
+![Clear Command Sequence Diagram](images/EmryClearCommandSequence.png)
+
+#### 4.3 Design Considerations
+
+**Aspect: Confirmation Mechanism**
+* **Alternative 1**: Clear data immediately.
+  * *Pros*: Single-step execution for power users.
+  * *Cons*: Extremely high risk of accidental data loss, as the command automatically overwrites the storage file.
+* **Alternative 2 (Current Choice)**: Two-step confirmation via a sub-prompt.
+  * *Reasoning*: Given that `clear` is a destructive and relatively rare operation, prioritizing data safety over speed is the more defensive and user-friendly choice.
 
 <!-- @@author -->
 
