@@ -193,6 +193,33 @@ public class ListArchiveCommandTest {
         assertEquals(2, stubUi.printedMessages.size());
     }
 
+
+    /**
+     * Verifies that archived applications are renumbered sequentially in the
+     * archive view instead of using raw backing-list indexes.
+     *
+     * @throws InternTrackrException If an error occurs during execution.
+     */
+    @Test
+    public void execute_archivedApplicationsSeparatedByActiveEntries_showsSequentialIndexes()
+            throws InternTrackrException {
+        Application app1 = new Application("Apple", "iOS Intern", "Applied");
+        app1.setArchived(true);
+        stubAppList.applications.add(app1);
+        stubAppList.applications.add(new Application("Shopee", "Backend Intern", "Applied"));
+        Application app2 = new Application("Meta", "AR Intern", "Interview");
+        app2.setArchived(true);
+        stubAppList.applications.add(app2);
+
+        listArchiveCommand.execute(stubAppList, stubUi, dummyStorage);
+
+        assertEquals(3, stubUi.printedMessages.size());
+        assertTrue(stubUi.printedMessages.get(1).startsWith("1. "));
+        assertTrue(stubUi.printedMessages.get(1).contains("Apple"));
+        assertTrue(stubUi.printedMessages.get(2).startsWith("2. "));
+        assertTrue(stubUi.printedMessages.get(2).contains("Meta"));
+    }
+
     /**
      * Verifies that the {@link ListArchiveCommand} is correctly instantiated as a
      * subclass of the {@link Command} abstract base class.
