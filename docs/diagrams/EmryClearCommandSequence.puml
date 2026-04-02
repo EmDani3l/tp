@@ -1,0 +1,39 @@
+@startuml
+skinparam Style strictuml
+box "Logic" #LightBlue
+participant "c:ClearCommand" as ClearCommand
+end box
+
+box "UI" #LightPink
+participant ":Ui" as Ui
+end box
+
+box "Model" #LightYellow
+participant ":ApplicationList" as ApplicationList
+participant ":Storage" as Storage
+end box
+
+[-> ClearCommand : execute()
+activate ClearCommand
+
+ClearCommand -> Ui : readCommand()
+activate Ui
+note right: User is prompted to type 'yes'
+Ui --> ClearCommand : "yes"
+deactivate Ui
+
+opt user input is "yes"
+    ClearCommand -> ApplicationList : clearApplications()
+    activate ApplicationList
+    ApplicationList --> ClearCommand
+    deactivate ApplicationList
+
+    ClearCommand -> Storage : save(applicationList)
+    activate Storage
+    Storage --> ClearCommand
+    deactivate Storage
+end
+
+[<- ClearCommand : success message
+deactivate ClearCommand
+@enduml
