@@ -57,9 +57,19 @@ Adds an internship application.
 
 ### Listing all applications : `list`
 
-Shows a list of all applications.
+Shows a list of all tracked internship applications.
+If an application has a note, it will be displayed indented on the line
+directly below that application's details.
 
 **Format:** `list`
+
+**Example output:**
+```
+Here are your internship applications:
+1. Company: Shopee | Role: Backend Intern | Status: Applied | ...
+   Note: Strong Java skills required, prepare LeetCode
+2. Company: Grab | Role: Data Analyst | Status: Interview | ...
+```
 
 ### Deleting an application : `delete`
 
@@ -127,8 +137,23 @@ Links recruiter or networking details to a specific internship application.
 
 ### Adding a note : `note`
 
-//TODO: Teammates to fill in description.
+Adds or updates a note for a specific internship application.
+Notes are useful for recording interview impressions, tech stack requirements,
+or any other application-specific insights.
 
+**Format:** `note INDEX n/NOTE_CONTENT`
+
+- Adds or **overwrites** the existing note for the application at `INDEX`.
+- `INDEX` must be a positive integer 1, 2, 3, ...
+- `NOTE_CONTENT` can contain any text including spaces and special characters.
+
+**Examples:**
+
+- `note 1 n/Strong Java skills required, prepare LeetCode`
+- `note 2 n/Remote friendly, good culture fit`
+
+> **Note:** Running `note` on an application that already has a note will
+> **overwrite** the previous note entirely.
 
 ### Filtering by status : `filter`
 
