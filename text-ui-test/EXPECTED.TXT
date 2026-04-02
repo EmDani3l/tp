@@ -217,7 +217,7 @@ ____________________________________________________________
 Error: The application index must be a number.
 ____________________________________________________________
 ____________________________________________________________
-Error: Invalid application index. Please provide a valid number.
+Error: Invalid application index. Please provide a number between 1 and 7.
 ____________________________________________________________
 ____________________________________________________________
 Got it. I've archived this application:
@@ -225,26 +225,45 @@ Got it. I've archived this application:
 It will no longer appear in the default list. Use 'list archive' to view it.
 ____________________________________________________________
 ____________________________________________________________
-Error: This application is already archived.
+Got it. I've archived this application:
+  Company: Meta | Role: Data Scientist | Status: Pending | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+It will no longer appear in the default list. Use 'list archive' to view it.
+____________________________________________________________
+____________________________________________________________
+Here are your archived internship applications:
+1. Company: Google | Role: Software Engineer | Status: Offered | Salary: $8500.50 | Contact Name: John Doe | Contact Email: john@google.com | Deadlines: [Deadline Type: Online Assessment | Due Date: 2026-12-12 | Done: [ ], Deadline Type: Technical Interview | Due Date: 2026-12-18 | Done: [ ]]
+2. Company: Meta | Role: Data Scientist | Status: Pending | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+____________________________________________________________
+____________________________________________________________
+Here are the matching applications in your list:
+2. Company: Meta | Role: Data Scientist | Status: Pending | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
 ____________________________________________________________
 ____________________________________________________________
 Here are your internship applications:
-2. Company: Meta | Role: Data Scientist | Status: Pending | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-3. Company: Apple | Role: Product Manager | Status: Interview | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-4. Company: Amazon | Role: Backend Intern | Status: Rejected | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-5. Company: Netflix | Role: Frontend Intern | Status: Accepted | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-6. Company: Tesla | Role: Hardware Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-7. Company: Microsoft | Role: Cloud Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+1. Company: Apple | Role: Product Manager | Status: Interview | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+2. Company: Amazon | Role: Backend Intern | Status: Rejected | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+3. Company: Netflix | Role: Frontend Intern | Status: Accepted | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+4. Company: Tesla | Role: Hardware Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+5. Company: Microsoft | Role: Cloud Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+____________________________________________________________
+____________________________________________________________
+Noted. I've removed this application:
+  Company: Amazon | Role: Backend Intern | Status: Rejected | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+Now you have 4 active application(s) in the list.
+____________________________________________________________
+____________________________________________________________
+Here are your internship applications:
+1. Company: Apple | Role: Product Manager | Status: Interview | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+2. Company: Netflix | Role: Frontend Intern | Status: Accepted | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+3. Company: Tesla | Role: Hardware Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+4. Company: Microsoft | Role: Cloud Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
 ____________________________________________________________
 ____________________________________________________________
 Overview:
-You are currently tracking 7 application(s).
+You are currently tracking 6 application(s) in total (4 active, 2 archived).
 Status Breakdown:
  - Applied: 2
- - Pending: 1
  - Interview: 1
- - Offered: 1
- - Rejected: 1
  - Accepted: 1
 Keep up the momentum!
 ____________________________________________________________
@@ -255,12 +274,12 @@ ____________________________________________________________
 Error: The application index must be a number.
 ____________________________________________________________
 ____________________________________________________________
-Error: Invalid application index. Please provide a valid number.
+Error: Invalid application index. Please provide a number between 1 and 4.
 ____________________________________________________________
 ____________________________________________________________
 Noted. I've removed this application:
-  Company: Meta | Role: Data Scientist | Status: Pending | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-Now you have 6 application(s) in the list.
+  Company: Netflix | Role: Frontend Intern | Status: Accepted | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+Now you have 3 active application(s) in the list.
 ____________________________________________________________
 ____________________________________________________________
 Error: Invalid format. Usage: note INDEX n/NOTE_CONTENT
@@ -272,7 +291,10 @@ ____________________________________________________________
 Error: Index must be a valid number. Usage: note INDEX n/NOTE_CONTENT
 ____________________________________________________________
 ____________________________________________________________
-Error: Invalid index: 99. Please enter a number between 1 and 6.
+Error: Invalid index: 99. Please enter a number between 1 and 5.
+____________________________________________________________
+____________________________________________________________
+Error: Input cannot contain the character '|'.
 ____________________________________________________________
 ____________________________________________________________
 Note updated for: Google | Software Engineer
@@ -280,11 +302,9 @@ Note updated for: Google | Software Engineer
 ____________________________________________________________
 ____________________________________________________________
 Here are your internship applications:
-2. Company: Apple | Role: Product Manager | Status: Interview | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-3. Company: Amazon | Role: Backend Intern | Status: Rejected | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-4. Company: Netflix | Role: Frontend Intern | Status: Accepted | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-5. Company: Tesla | Role: Hardware Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
-6. Company: Microsoft | Role: Cloud Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+1. Company: Apple | Role: Product Manager | Status: Interview | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+2. Company: Tesla | Role: Hardware Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
+3. Company: Microsoft | Role: Cloud Intern | Status: Applied | Salary: - | Contact Name: - | Contact Email: - | Deadlines: null
 ____________________________________________________________
 ____________________________________________________________
 Are you sure you want to clear all data? Type 'yes' to confirm:

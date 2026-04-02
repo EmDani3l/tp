@@ -9,13 +9,13 @@ import seedu.interntrackr.ui.Ui;
 import java.util.logging.Logger;
 
 /**
- * Lists all non-archived internship applications currently tracked.
+ * Lists all archived internship applications.
  */
-public class ListCommand extends Command {
-    private static final Logger logger = Logger.getLogger(ListCommand.class.getName());
+public class ListArchiveCommand extends Command {
+    private static final Logger logger = Logger.getLogger(ListArchiveCommand.class.getName());
 
     /**
-     * Executes the list command and prints all non-archived applications to the console.
+     * Executes the list archive command and prints all archived applications to the console.
      *
      * @param applications The list of internship applications.
      * @param ui           The user interface for output.
@@ -25,26 +25,26 @@ public class ListCommand extends Command {
     @Override
     public void execute(ApplicationList applications, Ui ui, Storage storage) throws InternTrackrException {
         assert applications != null : "ApplicationList cannot be null";
-        logger.info("Executing ListCommand. Total applications: " + applications.getSize());
+        logger.info("Executing ListArchiveCommand. Total applications: " + applications.getSize());
 
         int matchCount = 0;
         for (int i = 1; i <= applications.getSize(); i++) {
             Application app = applications.getApplication(i);
-            if (!app.isArchived()) {
+            if (app.isArchived()) {
                 matchCount++;
             }
         }
 
         if (matchCount == 0) {
-            ui.showMessage("No applications found. Start adding some!");
+            ui.showMessage("No archived applications found.");
             return;
         }
 
-        ui.showMessage("Here are your internship applications:");
+        ui.showMessage("Here are your archived internship applications:");
         int displayIndex = 1;
         for (int i = 1; i <= applications.getSize(); i++) {
             Application app = applications.getApplication(i);
-            if (!app.isArchived()) {
+            if (app.isArchived()) {
                 ui.showMessage(displayIndex + ". " + app.toString());
                 if (app.getNote() != null && !app.getNote().isBlank()) {
                     ui.showMessage("   Note: " + app.getNote());
@@ -53,6 +53,6 @@ public class ListCommand extends Command {
             }
         }
 
-        logger.fine("Listed " + matchCount + " non-archived applications.");
+        logger.fine("Listed " + matchCount + " archived applications.");
     }
 }

@@ -211,6 +211,32 @@ public class ListCommandTest {
         assertTrue(stubUi.printedMessages.get(1).contains("Apple"));
     }
 
+
+    /**
+     * Verifies that archived applications are excluded from the default list
+     * and visible entries are renumbered sequentially.
+     *
+     * @throws InternTrackrException If an error occurs during execution.
+     */
+    @Test
+    public void execute_mixedArchivedApplications_showsOnlyActiveApplicationsWithSequentialIndexes()
+            throws InternTrackrException {
+        stubAppList.applications.add(new Application("Shopee", "Backend Intern", "Applied"));
+        Application archivedApp = new Application("TikTok", "Data Intern", "Rejected");
+        archivedApp.setArchived(true);
+        stubAppList.applications.add(archivedApp);
+        stubAppList.applications.add(new Application("Grab", "Frontend Intern", "Offered"));
+
+        listCommand.execute(stubAppList, stubUi, dummyStorage);
+
+        assertEquals(3, stubUi.printedMessages.size());
+        assertEquals("Here are your internship applications:", stubUi.printedMessages.get(0));
+        assertTrue(stubUi.printedMessages.get(1).startsWith("1. "));
+        assertTrue(stubUi.printedMessages.get(1).contains("Shopee"));
+        assertTrue(stubUi.printedMessages.get(2).startsWith("2. "));
+        assertTrue(stubUi.printedMessages.get(2).contains("Grab"));
+    }
+
     /**
      * Verifies that the {@link ListCommand} is correctly instantiated as a
      * subclass of the {@link Command} abstract base class.

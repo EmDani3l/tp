@@ -6,6 +6,7 @@ import seedu.interntrackr.command.Command;
 import seedu.interntrackr.command.ClearCommand;
 import seedu.interntrackr.command.ExitCommand;
 import seedu.interntrackr.command.HelpCommand;
+import seedu.interntrackr.command.ListArchiveCommand;
 import seedu.interntrackr.command.ListCommand;
 import seedu.interntrackr.command.OverviewCommand;
 import seedu.interntrackr.exception.InternTrackrException;
@@ -29,6 +30,10 @@ public class Parser {
         if (fullCommand == null || fullCommand.isBlank()) {
             logger.warning("parse() received null or blank input.");
             throw new InternTrackrException("Input cannot be empty. Please enter a command.");
+        }
+
+        if (fullCommand.contains("|")) {
+            throw new InternTrackrException("Input cannot contain the character '|'.");
         }
 
         String[] parts = fullCommand.trim().split(" ", 2);
@@ -67,8 +72,16 @@ public class Parser {
             logger.fine("Parsed: OverviewCommand");
             return new OverviewCommand();
         case "list":
-            logger.fine("Parsed: ListCommand");
-            return new ListCommand();
+            if (arguments.isEmpty()) {
+                logger.fine("Parsed: ListCommand");
+                return new ListCommand();
+            }
+            if ("archive".equalsIgnoreCase(arguments)) {
+                logger.fine("Parsed: ListArchiveCommand");
+                return new ListArchiveCommand();
+            }
+            logger.warning("Invalid list arguments: \"" + arguments + "\"");
+            throw new InternTrackrException("Invalid format. Usage: list OR list archive");
         case "exit":
             logger.fine("Parsed: ExitCommand");
             return new ExitCommand();

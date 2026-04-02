@@ -13,6 +13,7 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class StorageTest {
@@ -140,6 +141,110 @@ class StorageTest {
         }
 
         assertThrows(InternTrackrException.class, storage::load);
+    }
+
+    /**
+     * Verifies that an archived application is saved with the archived flag
+     * and reloaded with isArchived restored to true.
+     */
+    @Test
+    void saveAndLoad_archivedApplication_preservesArchivedFlag() throws InternTrackrException {
+        Storage storage = new Storage(getTempFilePath());
+
+        Application app = new Application("Google", "SWE Intern", "Rejected",
+                "Sam Lee", "sam@google.com");
+        app.setArchived(true);
+
+        ArrayList<Application> toSave = new ArrayList<>();
+        toSave.add(app);
+
+        storage.save(toSave);
+        ArrayList<Application> loaded = storage.load();
+
+        assertEquals(1, loaded.size());
+        assertTrue(loaded.get(0).isArchived());
+        assertEquals("Google", loaded.get(0).getCompany());
+    }
+
+    /**
+     * Verifies that a non-archived application is reloaded with isArchived as false.
+     */
+    @Test
+    void saveAndLoad_nonArchivedApplication_isArchivedFalse() throws InternTrackrException {
+        Storage storage = new Storage(getTempFilePath());
+
+        ArrayList<Application> toSave = new ArrayList<>();
+        toSave.add(new Application("Grab", "Frontend Intern", "Applied", "-", "-"));
+
+        storage.save(toSave);
+        ArrayList<Application> loaded = storage.load();
+
+        assertEquals(1, loaded.size());
+        assertFalse(loaded.get(0).isArchived());
+    }
+
+    /**
+     * Verifies that a mix of archived and non-archived applications are saved and
+     * reloaded with their respective flags intact.
+     */
+    @Test
+    void saveAndLoad_mixedArchivedAndNonArchived_preservesAllFlags() throws InternTrackrException {
+        Storage storage = new Storage(getTempFilePath());
+
+        Application active = new Application("Shopee", "Backend Intern", "Applied", "-", "-");
+        Application archived = new Application("TikTok", "Data Intern", "Rejected", "-", "-");
+        archived.setArchived(true);
+
+        ArrayList<Application> toSave = new ArrayList<>();
+        toSave.add(active);
+        toSave.add(archived);
+
+        storage.save(toSave);
+        ArrayList<Application> loaded = storage.load();
+
+        assertEquals(2, loaded.size());
+        assertFalse(loaded.get(0).isArchived());
+        assertTrue(loaded.get(1).isArchived());
+    }
+
+    /**
+     * Verifies that an archived application that also has deadlines is saved and
+     * reloaded with both the archived flag and the deadlines fully intact.
+     *
+     * <p>This is a regression test for the storage parsing branch where
+     * {@code archived:true} is the last token and deadline fields precede it —
+     * i.e. the path that sets {@code deadlineEndIndex = parts.length - 1}.</p>
+     */
+    @Test
+    void saveAndLoad_archivedApplicationWithDeadlines_preservesBothFlagAndDeadlines()
+            throws InternTrackrException {
+        Storage storage = new Storage(getTempFilePath());
+
+        DeadlineList deadlines = new DeadlineList();
+        deadlines.addDeadline(new Deadline("OA", LocalDate.of(2026, 5, 1), false));
+        deadlines.addDeadline(new Deadline("Interview", LocalDate.of(2026, 5, 15), true));
+
+        Application app = new Application("Netflix", "SWE Intern", "Rejected",
+                "Jane Doe", "jane@netflix.com", deadlines);
+        app.setArchived(true);
+
+        ArrayList<Application> toSave = new ArrayList<>();
+        toSave.add(app);
+
+        storage.save(toSave);
+        ArrayList<Application> loaded = storage.load();
+
+        assertEquals(1, loaded.size());
+        Application loadedApp = loaded.get(0);
+
+        assertTrue(loadedApp.isArchived(), "Archived flag must survive the save/load round-trip");
+        assertEquals("Netflix", loadedApp.getCompany());
+        assertEquals(2, loadedApp.getDeadlines().getSize(),
+                "Both deadlines must survive alongside the archived flag");
+        assertEquals("OA", loadedApp.getDeadlines().getDeadlines().get(0).getDeadlineType());
+        assertFalse(loadedApp.getDeadlines().getDeadlines().get(0).getIsDone());
+        assertEquals("Interview", loadedApp.getDeadlines().getDeadlines().get(1).getDeadlineType());
+        assertTrue(loadedApp.getDeadlines().getDeadlines().get(1).getIsDone());
     }
 
     @Test
