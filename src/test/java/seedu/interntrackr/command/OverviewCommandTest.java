@@ -11,6 +11,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -31,45 +32,49 @@ public class OverviewCommandTest {
     }
 
     @Test
-    public void execute_validList_printsTotalCount() {
+    public void execute_validList_printsTotalCountAndBreakdown() {
         ApplicationList applications = new ApplicationList();
-        applications.addApplication(new Application("Google", "Software Engineer"));
-        applications.addApplication(new Application("Meta", "Data Scientist"));
+        applications.addApplication(new Application("Google", "Software Engineer", "Applied"));
+        applications.addApplication(new Application("Meta", "Data Scientist", "Interview"));
+        applications.addApplication(new Application("Apple", "Product Manager", "Applied"));
 
         Ui ui = new Ui();
         new OverviewCommand().execute(applications, ui, null);
 
         String output = outContent.toString();
-        assertTrue(output.contains("tracking 2 applications"),
-                "Should show tracking count of 2");
-        assertTrue(output.contains("Keep up the momentum!"),
-                "Should show encouragement message");
+        assertTrue(output.contains("tracking 3 application(s)"), "Should show tracking count of 3");
+        assertTrue(output.contains("Status Breakdown:"), "Should show the breakdown header");
+        assertTrue(output.contains("- Applied: 2"), "Should tally 2 Applied");
+        assertTrue(output.contains("- Interview: 1"), "Should tally 1 Interview");
+        assertFalse(output.contains("- Rejected:"), "Should not display statuses with 0 count");
+        assertTrue(output.contains("Keep up the momentum!"), "Should show encouragement message");
     }
 
     @Test
     public void execute_singleApplication_showsCountOfOne() {
         ApplicationList applications = new ApplicationList();
-        applications.addApplication(new Application("Grab", "Data Analyst"));
+        applications.addApplication(new Application("Grab", "Data Analyst", "Offered"));
 
         Ui ui = new Ui();
         new OverviewCommand().execute(applications, ui, null);
 
         String output = outContent.toString();
-        assertTrue(output.contains("tracking 1 applications"),
-                "Should show tracking count of 1");
+        assertTrue(output.contains("tracking 1 application(s)"), "Should show tracking count of 1");
+        assertTrue(output.contains("- Offered: 1"), "Should tally 1 Offered");
     }
 
     @Test
-    public void execute_emptyList_showsZeroCount() {
+    public void execute_emptyList_showsCustomEmptyMessage() {
         ApplicationList applications = new ApplicationList();
         Ui ui = new Ui();
         new OverviewCommand().execute(applications, ui, null);
 
         String output = outContent.toString();
-        assertTrue(output.contains("tracking 0 applications"),
-                "Should show tracking count of 0 when list is empty");
-        assertTrue(output.contains("Keep up the momentum!"),
-                "Should still show encouragement even for empty list");
+        assertTrue(output.contains("You haven't tracked any applications yet. Start adding some!"),
+                "Should show custom empty list message");
+        assertFalse(output.contains("tracking 0 application(s)"), "Should not show zero count");
+        assertFalse(output.contains("Status Breakdown:"), "Should not show breakdown for empty list");
+        assertFalse(output.contains("Keep up the momentum!"), "Should not show momentum message for empty list");
     }
 
     @Test
@@ -78,8 +83,7 @@ public class OverviewCommandTest {
         Ui ui = new Ui();
         new OverviewCommand().execute(applications, ui, null);
 
-        assertTrue(outContent.toString().contains("Overview:"),
-                "Should always print 'Overview:' header");
+        assertTrue(outContent.toString().contains("Overview:"), "Should always print 'Overview:' header");
     }
 
     @Test
@@ -101,10 +105,13 @@ public class OverviewCommandTest {
     @Test
     public void execute_nullStorage_doesNotThrow() {
         ApplicationList applications = new ApplicationList();
-        applications.addApplication(new Application("ByteDance", "SWE Intern"));
+        applications.addApplication(new Application("ByteDance", "SWE Intern", "Applied"));
         Ui ui = new Ui();
-        // OverviewCommand does not use storage — null should be safe
+
         new OverviewCommand().execute(applications, ui, null);
-        assertTrue(outContent.toString().contains("tracking 1 applications"));
+
+        String output = outContent.toString();
+        assertTrue(output.contains("tracking 1 application(s)"));
+        assertTrue(output.contains("- Applied: 1"));
     }
 }

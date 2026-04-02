@@ -121,8 +121,8 @@ class InternTrackrTest {
         InternTrackr tracker = makeTracker("overview\nexit\n");
         tracker.run();
 
-        assertTrue(outContent.toString().contains("tracking 0 applications"),
-                "overview on empty list should say 0 applications");
+        assertTrue(outContent.toString().contains("You haven't tracked any applications yet."),
+                "overview on empty list should show custom empty message");
     }
 
     @Test
@@ -137,7 +137,8 @@ class InternTrackrTest {
         String output = outContent.toString();
         assertTrue(output.contains("Got it"),
                 "Should confirm the application was added");
-        assertTrue(output.contains("tracking 1 applications"),
+
+        assertTrue(output.contains("tracking 1 application(s)"),
                 "overview should reflect 1 added application");
     }
 
