@@ -10,8 +10,7 @@
 
 ---
 <!-- @@author N-SANJAI -->
-
-### Application Architecture and Overview Feature
+### Application Architecture, Overview, Offer, Contact, and Help Features
 
 **Author:** Navaneethan Sanjai
 
@@ -49,15 +48,16 @@ The `Ui` class owns all terminal interaction — nothing else in the app touches
 
 #### 3. Overview Feature Implementation
 
-The `overview` command gives users a quick snapshot of how many internship applications they're currently tracking.
+The `overview` command gives users a quantitative snapshot of their internship applications, including a detailed analytics breakdown by stage.
 
 **Implementation Details:**
 
 The feature is handled by `OverviewCommand`, which extends the abstract `Command` class. Here's what happens when it runs:
 
-1. It queries `ApplicationList` directly for the current application count.
-2. It passes that count to `Ui` to format and display the summary.
-3. Since it's a read-only operation, it never touches `Storage`.
+1. It queries `ApplicationList` for the current application count.
+2. It iterates through the list, aggregating the frequencies of each application state (e.g., Applied, Pending) using a `LinkedHashMap` to maintain order based on `Application.VALID_STATUSES`.
+3. It passes this data to `Ui` to format and display the analytics summary.
+4. Since it's a read-only operation, it never touches `Storage`.
 
 ![Overview Command Sequence Diagram](images/SanjaiOverviewCommandSequence.png)
 
@@ -67,7 +67,44 @@ The diagram below shows the full flow — from the user typing `overview` all th
 
 ![End-to-End Sequence Diagram](images/SanjaiEndToEndSequence.png)
 
-#### 4. Design Considerations
+#### 4. Offer Feature Implementation
+
+The `offer` command enables users to track their compensation packages while automating the workflow of updating application statuses.
+
+**Implementation Details:**
+
+1. The command takes in the target index and the numerical salary.
+2. `OfferCommand#execute()` verifies the index bounds.
+3. It updates the `salary` field of the selected `Application`.
+4. It checks the application's current status. If the status is not already "Offered", it normalizes and updates the status automatically.
+5. `Storage#save()` is triggered immediately to ensure financial data is persistently written to disk.
+
+![Offer Command Sequence Diagram](images/SanjaiOfferCommandSequence.png)
+
+#### 5. Contact Feature Implementation
+
+The `contact` command allows users to store recruiter details directly alongside a specific application, keeping networking information localized.
+
+**Implementation Details:**
+
+1. The command takes in the target index, the contact name (prefixed by `c/`), and the contact email (prefixed by `e/`).
+2. `ContactCommand#execute()` verifies the index bounds against the `ApplicationList`.
+3. It updates the internal state of the selected `Application` with the provided name and email.
+4. `Storage#save()` is triggered immediately to ensure these networking details are securely written to disk and persist across sessions.
+
+![Contact Command Sequence Diagram](images/SanjaiContactCommandSequence.png)
+
+#### 6. Help Feature Implementation
+
+The `help` command is designed to provide users with direct assistance without cluttering the CLI environment.
+
+**Implementation Details:**
+
+The `HelpCommand` invokes `Ui` to display a hardcoded URL to the exhaustive online User Guide. This delegates documentation tracking to the web rather than bloating the internal executable with large text blocks.
+
+![Help Command Sequence Diagram](images/SanjaiHelpCommandSequence.png)
+
+#### 7. Design Considerations
 
 **Aspect: Handling an empty application list during `overview`**
 
@@ -75,11 +112,11 @@ The diagram below shows the full flow — from the user typing `overview` all th
 * **Alternative 2 (Current Choice):** Display "0 applications" without any fuss.
 * **Reasoning:** An empty list is a completely valid state — especially right after first launch. Treating it as an error would just confuse the user unnecessarily.
 
-**Aspect: Passing dependencies to read-only commands**
+**Aspect: Passing dependencies to read-only commands (`Overview`, `Help`)**
 
 * **Alternative 1:** Pass a valid `Storage` object to every command for consistency.
-* **Alternative 2 (Current Choice):** Pass `null` for `Storage` when calling `OverviewCommand`.
-* **Reasoning:** Since `OverviewCommand` never writes anything, giving it a live `Storage` reference risks accidental side effects. Passing `null` (guarded by `assert` statements) keeps the execution lightweight and the intent clear.
+* **Alternative 2 (Current Choice):** Pass `null` for `Storage` when calling read-only commands.
+* **Reasoning:** Since `OverviewCommand` and `HelpCommand` never write anything, giving them a live `Storage` reference risks accidental side effects. Passing `null` (guarded by `assert` statements) keeps the execution lightweight and the intent clear.
 
 <!-- @@author -->
 
