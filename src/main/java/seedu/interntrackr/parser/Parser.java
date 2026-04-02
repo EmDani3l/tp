@@ -6,6 +6,7 @@ import seedu.interntrackr.command.Command;
 import seedu.interntrackr.command.ClearCommand;
 import seedu.interntrackr.command.ExitCommand;
 import seedu.interntrackr.command.HelpCommand;
+import seedu.interntrackr.command.ListArchiveCommand;
 import seedu.interntrackr.command.ListCommand;
 import seedu.interntrackr.command.OverviewCommand;
 import seedu.interntrackr.exception.InternTrackrException;
@@ -67,6 +68,10 @@ public class Parser {
             logger.fine("Parsed: OverviewCommand");
             return new OverviewCommand();
         case "list":
+            if ("archive".equals(arguments)) {
+                logger.fine("Parsed: ListArchiveCommand");
+                return new ListArchiveCommand();
+            }
             logger.fine("Parsed: ListCommand");
             return new ListCommand();
         case "exit":
