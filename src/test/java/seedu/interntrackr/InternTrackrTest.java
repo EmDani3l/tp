@@ -75,6 +75,23 @@ class InternTrackrTest {
     }
 
     @Test
+    public void constructor_fieldsInitialized() throws Exception {
+        InternTrackr tracker = makeTracker("exit\n");
+
+        Field uiField = InternTrackr.class.getDeclaredField("ui");
+        uiField.setAccessible(true);
+        assertNotNull(uiField.get(tracker), "ui should be initialized");
+
+        Field storageField = InternTrackr.class.getDeclaredField("storage");
+        storageField.setAccessible(true);
+        assertNotNull(storageField.get(tracker), "storage should be initialized");
+
+        Field applicationsField = InternTrackr.class.getDeclaredField("applications");
+        applicationsField.setAccessible(true);
+        assertNotNull(applicationsField.get(tracker), "applications should be initialized");
+    }
+
+    @Test
     public void run_exitCommandOnly_exitsSmoothly() {
         InternTrackr tracker = makeTracker("exit\n");
         tracker.run();
@@ -158,6 +175,32 @@ class InternTrackrTest {
     }
 
     @Test
+    public void run_commandSequenceWithMultipleOperations_executesCorrectly() {
+        InternTrackr tracker = makeTracker("add c/Microsoft r/SDE\nlist\nadd c/Apple r/Software Engineer\nlist\noverview\nexit\n");
+        tracker.run();
+
+        String output = outContent.toString();
+        assertTrue(output.contains("tracking 2 application(s)"),
+                "Should track 2 applications after adding 2");
+        assertTrue(output.contains("Microsoft") && output.contains("Apple"),
+                "Should display both companies in list");
+    }
+
+    @Test
+    public void run_invalidCommandFollowedByValidCommand_continuesExecution() {
+        InternTrackr tracker = makeTracker("invalid_cmd\nadd c/Google r/Intern\nlist\nexit\n");
+        tracker.run();
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Error:"),
+                "Should show error for invalid command");
+        assertTrue(output.contains("Got it"),
+                "Should still process valid command after error");
+        assertTrue(output.contains("Google"),
+                "Should display the added application");
+    }
+
+    @Test
     public void main_withExitCommand_terminatesNormally() {
         System.setIn(new ByteArrayInputStream("exit\n".getBytes()));
         InternTrackr.main(new String[]{});
@@ -167,5 +210,90 @@ class InternTrackrTest {
                 "main() should show welcome");
         assertTrue(output.contains("Bye!"),
                 "main() should show goodbye");
+    }
+
+    @Test
+    public void main_withEnableLoggingFlag_enablesLogging() {
+        System.setIn(new ByteArrayInputStream("exit\n".getBytes()));
+        InternTrackr.main(new String[]{"--enable-logging"});
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Welcome to InternTrackr!"),
+                "main() should show welcome with logging enabled");
+        assertTrue(output.contains("Bye!"),
+                "main() should show goodbye");
+    }
+
+    @Test
+    public void main_withMultipleArgsIncludingLoggingFlag_parsesLoggingFlagCorrectly() {
+        System.setIn(new ByteArrayInputStream("exit\n".getBytes()));
+        InternTrackr.main(new String[]{"--some-other-flag", "--enable-logging", "--another-flag"});
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Welcome to InternTrackr!"),
+                "main() should process multiple args and find logging flag");
+        assertTrue(output.contains("Bye!"),
+                "main() should still exit normally");
+    }
+
+    @Test
+    public void main_withoutLoggingFlag_loggingDisabled() {
+        System.setIn(new ByteArrayInputStream("exit\n".getBytes()));
+        InternTrackr.main(new String[]{"--some-random-flag"});
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Welcome to InternTrackr!"),
+                "main() should show welcome with logging disabled");
+        assertTrue(output.contains("Bye!"),
+                "main() should show goodbye");
+    }
+
+    @Test
+    public void main_withEmptyArgs_loggingDisabledByDefault() {
+        System.setIn(new ByteArrayInputStream("exit\n".getBytes()));
+        InternTrackr.main(new String[]{});
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Welcome to InternTrackr!"),
+                "main() should work with empty args");
+    }
+
+    @Test
+    public void run_internTrackrExceptionInCommand_showsErrorAndContinues() {
+        InternTrackr tracker = makeTracker("delete 999\nexit\n");
+        tracker.run();
+
+        String output = outContent.toString();
+        assertTrue(output.contains("Error:"),
+                "Should catch and display InternTrackrException");
+        assertTrue(output.contains("Bye!"),
+                "Should continue loop after exception");
+    }
+
+    @Test
+    public void run_multipleExceptionsWithRecovery_continuesProcessing() {
+        InternTrackr tracker = makeTracker("delete 1\ndelete 2\nadd c/Test r/Role\nlist\nexit\n");
+        tracker.run();
+
+        String output = outContent.toString();
+        long errorCount = output.lines()
+                .filter(line -> line.startsWith("Error:"))
+                .count();
+        assertTrue(errorCount >= 2,
+                "Should show errors for invalid deletes");
+        assertTrue(output.contains("Got it"),
+                "Should successfully add application after errors");
+    }
+
+    @Test
+    public void run_helpCommandThenExit_displaysHelpAndExits() {
+        InternTrackr tracker = makeTracker("help\nexit\n");
+        tracker.run();
+
+        String output = outContent.toString();
+        assertTrue(output.contains("For more details") || output.contains("help"),
+                "Should display help information");
+        assertTrue(output.contains("Bye!"),
+                "Should still exit after help");
     }
 }
