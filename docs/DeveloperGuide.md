@@ -847,11 +847,19 @@ Reduces missed deadlines and confusion caused by scattered notes, emails, and me
 
 ## Non-Functional Requirements
 
-{Give non-functional requirements}
+* **Performance**: The application should be able to handle up to 1000 internship applications and their associated deadlines without any noticeable lag in command response time.
+* **Reliability (Data Integrity)**: The system must ensure that data is never lost during an abrupt exit; this is achieved by immediately saving to disk after any command that modifies the application state (e.g. `add`, `delete`, `status`, `offer`, `note`, `archive`).
+* **Portability**: The application should work on any mainstream OS with Java 17 installed.
+* **Efficiency**: A user who is a proficient typist should be able to manage their application list faster via the CLI than they could using a traditional GUI or spreadsheet.
 
 ## Glossary
 
-* *glossary item* - Definition
+* *Application* - A single entry in the tracker representing a specific internship role at a specific company.
+* *Status* - A predefined category representing the current stage of an internship (e.g., Applied, Pending, Interview, Offered, Rejected, Accepted).
+* *Archived Application* - An entry that has been hidden from the default list to reduce clutter but is still preserved in storage for historical reference.
+* *Deadline* - A specific milestone or task associated with an application, such as an Online Assessment (OA) or an interview date, which can be tracked independently.
+* *Normalization* - The internal process of converting user-inputted strings into a canonical Title Case format (e.g., converting "iNtErViEw" to "Interview") to ensure consistent filtering and display.
+* *Mainstream OS* - Windows, Linux, Unix, MacOS
 
 ## Instructions for manual testing
 
