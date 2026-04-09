@@ -259,9 +259,12 @@ Adds an important deadline linked to an application.
 
 ### Listing deadlines : `deadline list`
 
-Shows deadlines linked to a specific application.
+Shows all deadlines linked to a specific application.
 
 **Format:** `deadline list INDEX`
+
+- `INDEX` refers to the application's index number shown in the default application list.
+- `INDEX` must be a positive integer 1, 2, 3, ...
 
 **Example:**
 
