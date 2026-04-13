@@ -1,104 +1,154 @@
 # Navaneethan Sanjai - Project Portfolio Page
 
 ## Overview
-**InternTrackr** is a CLI-first internship application manager for university students applying to multiple internships. It helps users track where they applied, current statuses, and important dates in one place so they do not miss deadlines or lose track across spreadsheets, notes, and emails.
+**InternTrackr** is a CLI-first internship application manager for university students applying to multiple internships. It helps users track applications, statuses, contacts, offers, and deadlines in one place, instead of juggling spreadsheets, notes, and emails.
 
 ## Summary of Contributions
 
 ### Code Contributed
 [RepoSense Dashboard](https://nus-cs2113-ay2526-s2.github.io/tp-dashboard/?search=n-sanjai&breakdown=true&sort=groupTitle%20dsc&sortWithin=title&since=2026-02-20T00%3A00%3A00&timeframe=commit&mergegroup=&groupSelect=groupByRepos&checkedFileTypes=docs~functional-code~test-code~other&filteredFileName=)
 
-### Project Architecture & Core Infrastructure
-
-**Core File Structure (v1)**
-* Designed and implemented the initial project package structure and core classes
-* Established the foundational MVC architecture: `seedu.interntrackr.command`, `seedu.interntrackr.model`, `seedu.interntrackr.parser`, `seedu.interntrackr.ui`, `seedu.interntrackr.storage`, `seedu.interntrackr.exception`
-
-
-**InternTrackr.java (Main Application Controller)**
-* Implemented main application entry point with full lifecycle management: initialization, read-parse-execute loop, graceful error handling
-* Designed the startup sequence: `Ui` → `Storage` → `ApplicationList` initialization with fallback to empty list on corrupted data
-* Implemented the command loop that processes user input until exit, with error recovery (catches `InternTrackrException`, displays error, continues running)
-* Handled logging setup (`setupLogging()` method) for debugging support across the entire application
-* Result: Clean separation of concerns; all other features built on top of this solid foundation
-
----
-
 ### Enhancements Implemented
+I implemented several user-facing and infrastructure-level enhancements across the project. These contributions span both core architecture and feature work.
 
-**1. Recruiter Networking (`contact` command)**
-* Implemented a command to link recruiter names and emails directly to specific applications
-* Handles email validation (exactly one `@`, one dot after `@`, no spaces) and defensive index bounds checking
-* Result: Users can quickly access follow-up contacts without switching platforms
+**Core architecture and application flow**
+- Implemented the main application controller in `InternTrackr`, including startup, the read-parse-execute loop, graceful error handling, and fallback to an empty list when stored data is missing or corrupted.
+- Designed the control flow so command errors are caught and shown to the user without crashing the application.
 
-**2. Status Analytics (`overview` command)**
-* Designed and implemented an aggregation system that computes application counts by status
-* Used `LinkedHashMap` to maintain consistent status ordering (Applied → Pending → Interview → Offered → Rejected → Accepted)
-* Read-only command that queries `ApplicationList` without invoking `Storage`, demonstrating understanding of command side effects
-* Post-release fix: identified a UX ambiguity where archived applications were silently excluded from the status breakdown with no indication. Updated the output label to **"Active Status Breakdown"** and audited the filtering logic to confirm `isArchived()` is checked correctly before aggregating counts.
-* Result: Users see job hunt momentum at a glance, with a clear distinction between active and archived applications
+**`overview` command**
+- Implemented the `overview` command to show a quantitative summary of internship applications.
+- Aggregated active application statuses using a `LinkedHashMap` so the displayed order remains stable and meaningful.
+- Explicitly excluded archived applications from the breakdown and labelled the output as **Active Status Breakdown** to avoid ambiguity.
 
-**3. Compensation Tracking (`offer` command)**
-* Implemented salary logging with automatic status normalization to "Offered"
-* Salary validation: rejects scientific notation, enforces max 2 decimal places, caps at $10M to prevent overflow
-* Fixed bug where large doubles displayed as scientific notation (e.g., `8.92E33` → proper currency format)
-* Data persists immediately via `Storage#save()` to prevent financial data loss
-* Result: Users can track and compare compensation packages securely
+**`offer` command**
+- Implemented the `offer` command for salary tracking.
+- Added logic to update the salary of an application and automatically normalize its status to `"Offered"` when needed.
+- Ensured salary updates are persisted immediately via `Storage#save()`.
 
-**4. In-App Assistance (`help` command)**
-* Implemented lightweight help command that points to external online documentation
-* Design rationale: Keeps the application lightweight while ensuring documentation stays current
-* Result: Smooth onboarding without requiring app rebuild
+**`contact` command**
+- Implemented the `contact` command so users can store recruiter details directly inside an application.
+- Added index validation and persistence support so the data remains available across sessions.
 
-**5. Advanced Deadline Management (`deadline undone` & `deadline delete`)**
-* Implemented full state management for deadlines, allowing users to revert completed deadlines back to incomplete and permanently remove cancelled deadlines
-* Added defensive checks to prevent redundant operations (e.g., unmarking an already incomplete deadline) to optimize disk I/O
-* Result: Users have complete control over task tracking and lifecycle management
+**`help` command**
+- Implemented the `help` command to direct users to the full online User Guide instead of embedding large help text inside the CLI.
+- This keeps the application lightweight while allowing documentation to stay up to date.
 
-**6. Strict Date Validation Engine**
-* Overhauled date parsing for all deadline commands using `ResolverStyle.STRICT` to prevent Java's default silent mutation of invalid dates (e.g., converting 31-02-2026 to 28-02-2026)
-* Added logic to explicitly reject past dates and catch `NumberFormatException` cleanly to prevent stack trace leaks
-* Result: Guarantees absolute data integrity for critical application timelines
+**Advanced deadline management**
+- Implemented `deadline undone` and `deadline delete` so users can fully manage deadline lifecycle states.
+- Updated `DeadlineCommandParser` to support the new subcommands and handle invalid indices cleanly.
+- Added checks to prevent redundant operations such as unmarking an already incomplete deadline.
 
-**7. UI List Summary Abstraction (`toSummaryString`)**
-* Designed a clean abstraction for displaying applications in list views by dynamically calculating deadline counts instead of dumping raw internal array data
-* Refactored `ListCommand`, `ListArchiveCommand`, `FilterCommand`, and `FindCommand` to uniformly adopt this abstraction
-* Result: Significantly decluttered terminal output, providing users with a polished, highly readable UI even when tracking dozens of deadlines
+**Strict date validation**
+- Strengthened deadline parsing by replacing Java’s default lenient behavior with `ResolverStyle.STRICT` and `uuuu`.
+- Added validation to reject invalid calendar dates and past dates.
+- This fixed a real correctness issue where invalid dates could otherwise be silently rewritten.
 
+**List output abstraction**
+- Implemented `toSummaryString()` in `Application` to improve the output of list-based commands.
+- Instead of showing raw internal deadline data, list views now display clean summaries such as `Deadlines: 2 deadlines`.
+- Integrated this abstraction into `list`, `list archive`, `filter`, and `find` for consistent UI behavior.
+
+---
 ### Contributions to the User Guide
-* Documented all four base commands (`contact`, `offer`, `overview`, `help`) with clear format specifications and practical examples
-* Documented the new `deadline undone` and `deadline delete` commands, including formats, constraints, and step-by-step examples
-* Removed deprecated `n/NOTES` parameters from deadline features to accurately reflect the updated domain model
-* Added usage notes clarifying constraints (e.g., contact name must precede email, salary max 2 decimal places)
-* Added a clarifying note under the `filter` command specifying that it only affects the display - the `INDEX` for all commands always refers to the position in the default `list` output, not the filtered view
-* Maintained and updated the Command Summary table to ensure quick reference accuracy
+I contributed the UG documentation for:
+- `contact`
+- `offer`
+- `overview`
+- `help`
+- `deadline undone`
+- `deadline delete`
 
+I also updated command formats, examples, and parameter constraints, and helped keep the command summary aligned with the implemented behavior.
+
+---
 ### Contributions to the Developer Guide
-* Explained implementation of each feature with sequence diagrams
-* **Architecture Overview:** Documented MVC pattern, package structure, and command execution flow
-* **Main Application Controller (InternTrackr.java):** Detailed startup sequence, error recovery loop, and logging setup with sequence diagrams
-* **Overview Feature:** Documented read-only query pattern, `LinkedHashMap` usage for status ordering, and `isArchived()` filtering logic for the Active Status Breakdown
-* **Offer Feature:** Detailed salary validation pipeline, automatic status update logic, and salary formatting bug fix
-* **Advanced Deadline Management:** Documented parser routing, bounds-checking, and execution flow for `deadline undone` and `deadline delete`
-* **Strict Date Validation:** Explained the transition from `ResolverStyle.SMART` to `ResolverStyle.STRICT` and the rationale behind rejecting past dates
-* **UI List Summary Abstraction:** Detailed the implementation of `toSummaryString()` and its integration across multiple command models
-* **Design Considerations:** Authored new design choices regarding "Handling Date Validation for Deadlines" (SMART vs STRICT) and "Unmarking a Deadline" (silent failure vs explicit exception)
-* **Object Diagram:** Added `SanjaiObjectDiagram`
-* **PE-D Fixes (Diagrams):** Identified and corrected incorrect message flow direction across 5 sequence diagrams (arrows were drawn `UI → InternTrackr` when the actual code has `InternTrackr` calling `ui.readCommand()`); added activation bars consistently across all 8 authored diagrams; removed a redundant end-to-end diagram that duplicated the overview sequence; corrected a factually inaccurate design consideration that claimed `null` was passed to read-only commands
-* **PE-D Fixes (Documentation):** Resolved PDF horizontal scrollbar cut-offs by optimizing sample data string lengths for print rendering
+I authored and updated DG sections covering:
+- Main control flow and architecture
+- UI component responsibilities
+- `overview` feature implementation
+- `offer` feature implementation
+- `contact` feature implementation
+- `help` feature implementation
+- Advanced deadline management (`undone` and `delete`)
+- Strict date validation
+- UI list summary abstraction
+- Design considerations for deadline validation, undone behavior, empty overview state, and uniform dependency passing
+
+I also added and refined multiple UML diagrams, including:
+- Startup sequence diagram
+- Run loop happy-path sequence diagram
+- Run loop error-path sequence diagram
+- Overview command sequence diagram
+- Overview runtime object diagram
+- Offer command sequence diagram
+- Contact command sequence diagram
+- Help command sequence diagram
+
+### Contributions to Team-Based Tasks
+- Reviewed and corrected sequence diagrams whose message directions did not match the actual call flow.
+- Standardized diagram style by applying activation bars more consistently.
+- Corrected inaccurate DG design rationale related to dependency passing to read-only commands.
+- Helped fix PE-D issues related to deadline, error handling, and list output formatting.
+
+### Review and Mentoring Contributions
+- Helped audit documentation and diagrams for technical correctness and consistency.
+- Identified mismatches between implementation and documentation, especially in control flow and deadline-related behavior.
+
+### Contributions Beyond the Project Team
+- Contributed bug fixes discovered during PE-D, especially around invalid deadline dates, inconsistent deadline error handling, and raw internal deadline output in list views.
+- These fixes improved both correctness and user experience in the final product.
 
 ---
 
-## Contributions to the Developer Guide - Extracts
+## Contributions to the User Guide (Extracts)
 
-### Overview Feature Implementation
-The `OverviewCommand` queries `ApplicationList` for the total count and iterates through all applications, calling `isArchived()` on each to skip archived entries. Status frequencies for active applications are aggregated using a `LinkedHashMap` to preserve insertion order defined by `Application.VALID_STATUSES`. The results are displayed under the heading "Active Status Breakdown", making it explicit to users that archived applications are intentionally excluded. This read-only operation never invokes `Storage`, demonstrating the principle of minimising side effects.
+### Adding recruiter contact details: `contact`
+Stores the recruiter’s name and email for a specific application.
 
-### Offer Feature Implementation
-The `OfferCommand` follows a strict validation pipeline: verify index bounds, parse and validate salary (rejecting scientific notation and enforcing 2 decimal place limit), update the application's salary field, check if status needs normalization to "Offered", then immediately trigger `Storage#save()` to ensure financial data persists. The salary formatting uses `String.format("$%.2f", salary)` to handle floating-point display issues and prevent scientific notation in output.
+**Format:** `contact INDEX c/NAME e/EMAIL`
 
-### UI List Summary Abstraction (`toSummaryString`)
-To handle applications accumulating large numbers of deadlines without cluttering the CLI, a new output abstraction was introduced for list-based commands. Instead of relying on `toString()`—which outputs the raw string representations of all attached `Deadline` objects—`toSummaryString()` dynamically calculates `deadlines.getSize()` and formats the output cleanly (e.g., `Deadlines: 0 deadlines` or `Deadlines: 2 deadlines`). This abstraction ensures UI consistency across `ListCommand`, `ListArchiveCommand`, `FilterCommand`, and `FindCommand`.
+**Example:** `contact 1 c/John Doe e/john.doe@example.com`
+
+### Logging an offer: `offer`
+Stores the salary for an application and updates the application status to `Offered` if needed.
+
+**Format:** `offer INDEX s/SALARY`
+
+**Example:** `offer 1 s/5000.00`
+
+### Unmarking a deadline as done: `deadline undone`
+Marks a completed deadline as not done.
+
+**Format:** `deadline undone INDEX i/DEADLINE_INDEX`
+
+**Example:** `deadline undone 1 i/1`
+
+### Deleting a deadline: `deadline delete`
+Deletes a specific deadline from an application.
+
+**Format:** `deadline delete INDEX i/DEADLINE_INDEX`
+
+**Example:** `deadline delete 1 i/2`
+
+---
+
+## [Optional] Contributions to the Developer Guide (Extracts)
+
+### Advanced Deadline Management
+The application’s deadline capabilities were expanded to allow users to fully manage the state of their tasks by unmarking completed deadlines or deleting them entirely.
+
+1. The `DeadlineCommandParser` was updated to securely parse the `undone` and `delete` subcommands, intercepting invalid non-numerical indices and preventing stack trace leaks.
+2. `DeadlineUndoneCommand` and `DeadlineDeleteCommand` first resolve the active application, then retrieve its `DeadlineList`.
+3. Strict bounds-checking is applied to both the application index and the deadline index.
+4. For `undone`, the command throws an exception if the deadline is already incomplete, preventing redundant operations and unnecessary saves.
+5. For `delete`, the command removes the selected deadline and persists the change immediately.
 
 ### Strict Date Validation
-To ensure data integrity for internship timelines, the date parsing logic for deadlines was overhauled. By default, Java's `DateTimeFormatter` uses `ResolverStyle.SMART`, which silently auto-corrects invalid dates (e.g., automatically converting `31-02-2026` to `28-02-2026`). The parser was upgraded to use `ResolverStyle.STRICT` alongside the `uuuu` year format. Additional logic explicitly evaluates `dueDate.isBefore(LocalDate.now())`. If a user inputs a non-existent calendar date or a past date, the parser immediately catches it and throws an `InternTrackrException`.
+To ensure data integrity for internship timelines, the date parsing logic for deadlines was overhauled to prevent silent mutation of invalid dates.
+
+By default, Java’s `DateTimeFormatter` uses `ResolverStyle.SMART`, which may auto-correct invalid dates. The parser was upgraded to use `ResolverStyle.STRICT` with the `uuuu` year format, and additional checks reject past dates. If a user enters a non-existent calendar date or past date, the parser throws an `InternTrackrException` immediately.
+
+### UI List Summary Abstraction (`toSummaryString`)
+To prevent CLI clutter when applications accumulate many deadlines, a new `toSummaryString()` abstraction was introduced.
+
+Instead of relying on `toString()`, which exposes raw internal deadline data, `toSummaryString()` computes the deadline count and formats it cleanly, such as `Deadlines: 0 deadlines` or `Deadlines: 2 deadlines`. This abstraction is used consistently across `ListCommand`, `ListArchiveCommand`, `FilterCommand`, and `FindCommand`.
