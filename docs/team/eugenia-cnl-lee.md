@@ -119,6 +119,10 @@ structured and extensible component integrated across the system.
     - Ensured features worked cohesively across parser, model, UI, and storage
     - Maintained consistency between documentation and implementation
 
+* **Documentation navigation improvement**
+    - Updated About Us page to include hyperlinks to each team member’s PPP
+    - Improved accessibility and navigation for evaluators reviewing individual contributions
+
 ### 7. Review / Mentoring Contributions
 
 * Reviewed teammates’ PRs and:
