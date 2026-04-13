@@ -286,7 +286,7 @@ This ensures that only valid command objects are created and executed.
 + **Reasoning:**  
   All deadline commands share a common prefix (`deadline`), making them
   conceptually grouped. Centralising parsing avoids unnecessary fragmentation
-  while maintaining readability, as subcommands (`add`, `list`, `done`)
+  while maintaining readability, as subcommands (`add`, `list`, `done`, `undone`, `delete`)
   are closely related in behaviour.
 
 ---
@@ -426,6 +426,7 @@ When `DeadlineDoneCommand#execute()` is called:
 9. Calls `Storage#save()`
 
 The sequence diagram below shows two-level validation before mutation:
+
 ![Deadline Done Command Sequence Diagram](images/EugeniaDeadlineDoneCommandSequence.png)
 
 #### 5.2 Parsing Logic
