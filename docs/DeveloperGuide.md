@@ -296,7 +296,7 @@ When `DeadlineAddCommand#execute()` is called:
 2. Retrieves active `Application` from `ApplicationList`
 3. Constructs `Deadline`
 4. Adds to `DeadlineList`
-5. Displays confirmation message via `Ui`
+5. Displays confirmation messages via `Ui`
 6. Calls `Storage#save()`
 
 The sequence diagram below shows validation occurring before any model mutation:
