@@ -972,7 +972,7 @@ To test features like filtering, archiving, and overviews without manually typin
 
 ```text
 Google | Software Engineer Intern | Applied | - | - | - | Leetcode Hard expected
-Meta | Data Scientist | Interview | John Doe | john@meta.com | - | - | OA | 2026-10-12 | true | Tech Round | 2026-11-01 | false
+Meta | Data Scientist | Interview | - | - | - | - | OA | 2026-10-12 | true
 Netflix | Backend Intern | Rejected | - | - | - | - | archived:true
 TikTok | iOS Engineer | Offered | Jane Tan | jane@tiktok.com | 6500.0 | Great benefits
 Apple | Hardware Intern | Pending | - | - | - | -
@@ -1036,7 +1036,7 @@ note 1 n/Review OOP concepts
 overview
 ```
 
-**Expected:** Shows total tracked applications and a breakdown tally of statuses (e.g., `1 Applied`, `1 Pending`, etc.).
+**Expected:** Shows 5 total applications (4 active, 1 archived) and an Active Status Breakdown (e.g., `Interview: 2`, `Offered: 1`, `Pending: 1`).
 
 **Test:**
 
@@ -1080,7 +1080,7 @@ archive 1
 list archive
 ```
 
-**Expected:** Shows Google and Netflix.
+**Expected:** Shows Netflix and Google.
 
 **Test:**
 
@@ -1088,19 +1088,27 @@ list archive
 unarchive 2
 ```
 
-> Assuming Netflix is index 2 in the archive list.
+> Google is at index 2 in the archive list (Netflix is index 1).
 
-**Expected:** Netflix is restored to the active list view.
+**Expected:** Google is restored to the active list view.
 
 #### 3.4 Deadlines
 
 **Test:**
 
 ```text
-deadline list 2
+deadline add 2 t/Tech Round d/01-11-2026
 ```
 
 > Assuming Meta is at index 2 in the active list.
+
+**Expected:** Adds a `Tech Round` deadline to Meta.
+
+**Test:**
+
+```text
+deadline list 2
+```
 
 **Expected:** Lists the `"OA"` (`Done`) and `"Tech Round"` (`Not Done`) deadlines.
 
