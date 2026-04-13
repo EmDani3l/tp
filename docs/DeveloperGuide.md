@@ -227,6 +227,18 @@ A list-based design better models real internship workflows and allows future ex
 - Deadlines are scoped per application (no global access)
 - State modified only via model methods (`setDone()`)
 
+**Aspect: Per-application deadlines vs global deadline list**
+
+* **Alternative 1:** Global deadline list
+    + Pros: Easier aggregation and sorting
+    + Cons: Loses association with applications
+
+* **Alternative 2 (Current Choice):** Deadlines scoped per application
+    + Pros: Maintains clear ownership and context
+    + Cons: Harder to aggregate across applications
+    + **Reasoning:** Users think of deadlines as tied to specific applications,
+      so preserving this relationship improves usability and mental mapping.
+
 ---
 
 ### 2. Deadline Parser Design
