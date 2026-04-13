@@ -253,6 +253,7 @@ Filter cleared. Showing all applications:
 > **Note:** The `filter` command only affects the display. For all commands that take an `INDEX`
 > (e.g., `status`, `contact`, `offer`, `archive`), the index always corresponds to the position
 > shown in the default `list` output, not the filtered view.
+> Filtering can only be done on active applications (i.e. does not search through archived applications)
 
 ### Finding applications : `find`
 
@@ -272,6 +273,8 @@ Finds applications whose company name or role contains the specified keyword.
 Here are the matching applications in your list:
 1. Company: Shopee | Role: Backend Intern | Status: Applied | ...
 ```
+> **Note:** The `find` command only searches for applications containing the keyword within active applications.
+> Archived applications with keyword will not appear in the output.
 
 ### Adding a deadline : `deadline add`
 
