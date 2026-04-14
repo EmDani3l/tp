@@ -25,9 +25,8 @@ I implemented several user-facing and infrastructure-level enhancements across t
 - Added logic to update the salary of an application and automatically normalize its status to `"Offered"` when needed.
 - Ensured salary updates are persisted immediately via `Storage#save()`.
 
-**`contact` command**
-- Implemented the `contact` command so users can store recruiter details directly inside an application.
-- Added index validation and persistence support so the data remains available across sessions.
+**`contact` command documentation**
+- Authored the UG and DG documentation for the `contact` feature (implemented by teammate), including the sequence diagram and design rationale.
 
 **`help` command**
 - Implemented the `help` command to direct users to the full online User Guide instead of embedding large help text inside the CLI.
