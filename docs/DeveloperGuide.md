@@ -168,6 +168,7 @@ To handle applications accumulating large numbers of deadlines without clutterin
 
 * **Alternative 2:** Pass `null` for `Storage` when calling read-only commands.
 * **Reasoning against:** Although read-only commands do not use `Storage`, passing `null` would require every call site to know which commands are "read-only", breaking the uniform command interface and risking `NullPointerException` if that assumption ever changes.
+
 ---
 <!-- @@author -->
 
