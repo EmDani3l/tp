@@ -191,7 +191,7 @@ Links recruiter or networking details to a specific internship application.
 
 **Format:** `contact INDEX c/NAME e/EMAIL`
 
-* The index refers to the index number shown in the displayed application list.
+* The index refers to the index number in the active application list (i.e. excludes archived applications)
 * `INDEX` must be a positive integer 1, 2, 3, ...
 * **Note:** The contact name (`c/`) must be specified before the contact email (`e/`).
 
