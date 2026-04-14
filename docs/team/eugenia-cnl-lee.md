@@ -90,6 +90,8 @@ structured and extensible component integrated across the system.
     - Debugging parser-related issues
     - Structuring command and model interactions
 
+---
+
 ## Contributions to the User Guide
 
 * Documented:
@@ -103,6 +105,8 @@ structured and extensible component integrated across the system.
     - Clear command formats
     - Realistic examples
     - Consistent CLI-style documentation
+
+---
 
 ## Contributions to the Developer Guide
 
