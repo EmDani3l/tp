@@ -1357,7 +1357,6 @@ Reduces missed deadlines and confusion caused by scattered notes, emails, and me
 | v2.0    | student  | add salary and benefit information to an offer                   | compare compensation packages and make informed decisions                      |
 | v2.0    | user     | add recruiter contact information to an application              | easily find who to contact for follow-ups                                      |
 | v2.0    | user     | add notes to an application                                      | jot down interview thoughts or tech stack requirements                         |
-| v2.0    | user     | view all deadlines sorted by date                                | see which deadline is approaching next                                         |
 | v2.0    | user     | search for an application by company name                        | find specific details quickly without scrolling through the entire list        |
 | v2.0    | user     | add recruiter contact information/email to an application        | find who to contact for follow-ups.                                            |
 | v2.1    | user     | mark a completed deadline as undone                              | fix mistakes if I accidentally marked a task as done                           |

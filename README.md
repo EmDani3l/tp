@@ -1,30 +1,25 @@
-# InternTrackr project template
+# InternTrackr
 
-This is a project template for a greenfield Java project. It's named after the Java mascot _Duke_. Given below are instructions on how to use it.
+InternTrackr is a CLI-first internship application manager for university students applying to many internships. It helps you track where you applied, current status, contacts, offers, deadlines, and notes in one place — instead of juggling spreadsheets, emails, and Notion pages.
 
-## Setting up in Intellij
+## Setting up in IntelliJ
 
-Prerequisites: JDK 17 (use the exact version), update Intellij to the most recent version.
+Prerequisites: JDK 17 (use the exact version), update IntelliJ to the most recent version.
 
-1. **Ensure Intellij JDK 17 is defined as an SDK**, as described [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk) -- this step is not needed if you have used JDK 17 in a previous Intellij project.
-1. **Import the project _as a Gradle project_**, as described [here](https://se-education.org/guides/tutorials/intellijImportGradleProject.html).
-1. **Verify the setup**: After the importing is complete, locate the `src/main/java/seedu/duke/Duke.java` file, right-click it, and choose `Run Duke.main()`. If the setup is correct, you should see something like the below:
+1. **Ensure IntelliJ JDK 17 is defined as an SDK**, as described [here](https://www.jetbrains.com/help/idea/sdk.html#set-up-jdk) -- this step is not needed if you have used JDK 17 in a previous IntelliJ project.
+2. **Import the project _as a Gradle project_**, as described [here](https://se-education.org/guides/tutorials/intellijImportGradleProject.html).
+3. **Verify the setup**: After the importing is complete, locate the `src/main/java/seedu/interntrackr/InternTrackr.java` file, right-click it, and choose `Run InternTrackr.main()`. If the setup is correct, you should see something like the below:
    ```
    > Task :compileJava
    > Task :processResources NO-SOURCE
    > Task :classes
-   
-   > Task :Duke.main()
-   Hello from
-    ____        _        
-   |  _ \ _   _| | _____ 
-   | | | | | | | |/ / _ \
-   | |_| | |_| |   <  __/
-   |____/ \__,_|_|\_\___|
-   
-   What is your name?
+
+   > Task :InternTrackr.main()
+   ____________________________________________________________
+   Welcome to InternTrackr! Ready to hunt for some internships?
+   ____________________________________________________________
    ```
-   Type some word and press enter to let the execution proceed to the end.
+   Type a command (e.g. `help`) and press Enter.
 
 **Warning:** Keep the `src\main\java` folder as the root folder for Java files (i.e., don't rename those folders or move Java files to another folder outside of this folder path), as this is the default location some tools (e.g., Gradle) expect to find Java files.
 
@@ -41,7 +36,6 @@ Prerequisites: JDK 17 (use the exact version), update Intellij to the most recen
 
 ### JUnit tests
 
-* A skeleton JUnit test (`src/test/java/seedu/duke/DukeTest.java`) is provided with this project template. 
 * If you are new to JUnit, refer to the [JUnit Tutorial at se-education.org/guides](https://se-education.org/guides/tutorials/junit.html).
 
 ## Checkstyle
@@ -55,12 +49,7 @@ The project uses [GitHub actions](https://github.com/features/actions) for CI. W
 
 ## Documentation
 
-`/docs` folder contains a skeleton version of the project documentation.
+`/docs` folder contains the project documentation.
 
-Steps for publishing documentation to the public: 
-1. If you are using this project template for an individual project, go your fork on GitHub.<br>
-   If you are using this project template for a team project, go to the team fork on GitHub.
-1. Click on the `settings` tab.
-1. Scroll down to the `GitHub Pages` section.
-1. Set the `source` as `master branch /docs folder`.
-1. Optionally, use the `choose a theme` button to choose a theme for your documentation.
+* [User Guide](docs/UserGuide.md)
+* [Developer Guide](docs/DeveloperGuide.md)
